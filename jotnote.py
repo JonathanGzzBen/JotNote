@@ -3,7 +3,7 @@
 from jotnote import app
 
 def main():
-    app.run()
+    app.cli()
 
 if __name__ == "__main__":
     main()
