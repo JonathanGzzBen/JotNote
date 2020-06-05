@@ -8,7 +8,7 @@ from jotnote.note import Note
 @click.pass_context
 def cli(ctx=None):
     if ctx.invoked_subcommand is None:
-        addWithEditor()
+        click.echo("List notes")
 
 def addWithEditor():
     content = click.edit()
@@ -21,12 +21,14 @@ def addWithEditor():
 @cli.command()
 @click.argument('content', nargs=-1)
 def add(content):
-    content = " ".join(content)
-    click.echo(content)
-    title = content.split(".")[0]
-    content = content.split(".")[1]
-    click.echo("Title: " + title)
-    click.echo("Content: " + content)
+    if content:
+        content = " ".join(content)
+        title = content.split(".")[0]
+        content = content.split(".")[1]
+        click.echo("Title: " + title)
+        click.echo("Content: " + content)
+    else:
+        addWithEditor()
 
 if __name__ == "__main__":
     cli()
