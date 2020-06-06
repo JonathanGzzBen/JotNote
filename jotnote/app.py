@@ -24,7 +24,7 @@ def create_database():
         sqliteConnection.commit()
         cursor.close()
     except sqlite3.Error as error:
-        print("Error while creating a sqlite table", error)
+        print("Error while creating sqlite table", error)
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
@@ -70,7 +70,7 @@ def print_notes():
         print(tabulate(records, headers=["Title"]))
         cursor.close()
     except sqlite3.Error as error:
-        print("Failes to read data from sqlite table", error)
+        print("Failed to read data from sqlite table", error)
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
