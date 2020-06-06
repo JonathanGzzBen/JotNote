@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-import argparse
 import click
+from tabulate import tabulate
 import sqlite3
 import os
 from jotnote.note import Note
 
 database_filename = "jotnote.db"
+title_max_length_display = 35
 
 def create_database():
     try:
@@ -56,12 +57,17 @@ def print_notes():
         sqliteConnection = sqlite3.connect(database_filename)
         cursor = sqliteConnection.cursor()
 
-        sqlite_select_query = """ SELECT * FROM Note """
+        sqlite_select_query = f""" 
+            SELECT id,
+            CASE
+            WHEN length(title) >= {title_max_length_display} THEN (substr(title,0,{title_max_length_display}) || '...')
+            ELSE title
+            END AS 'title'
+            FROM Note
+        """
         cursor.execute(sqlite_select_query)
         records = cursor.fetchall()
-        for row in records:
-            print(f"Title: {row[1]}")
-            print(f"Content: {row[2]}")
+        print(tabulate(records, headers=["Title"]))
         cursor.close()
     except sqlite3.Error as error:
         print("Failes to read data from sqlite table", error)
