@@ -9,7 +9,9 @@ from jotnote.note import Note
 database_filename = "jotnote.db"
 title_max_length_display = 35
 
-def create_database():
+def create_database_if_not_exists():
+    if os.path.exists(database_filename):
+        return
     try:
         sqliteConnection = sqlite3.connect(database_filename)
         sqlite_create_table_query = """
@@ -27,12 +29,11 @@ def create_database():
         print("Error while creating sqlite table", error)
     finally:
         if (sqliteConnection):
-            sqliteConnection.close()    
+            sqliteConnection.close()
 
 def save_note(title, content):
     try:
-        if not os.path.exists(database_filename):
-            create_database()
+        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)
         cursor = sqliteConnection.cursor()
 
@@ -53,6 +54,7 @@ def save_note(title, content):
 
 def update_note(id, title, content):
     try:
+        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)
         cursor = sqliteConnection.cursor()
 
@@ -74,9 +76,9 @@ def update_note(id, title, content):
         if sqliteConnection:
             sqliteConnection.close()
 
-
 def print_notes():
     try:
+        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)
         cursor = sqliteConnection.cursor()
 
@@ -124,6 +126,7 @@ def add_with_editor():
 @click.argument('id')
 def edit(id):
     try:
+        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)
         cursor = sqliteConnection.cursor()
 
