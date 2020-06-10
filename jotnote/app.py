@@ -51,6 +51,30 @@ def save_note(title, content):
         if (sqliteConnection):
             sqliteConnection.close()
 
+def update_note(id, title, content):
+    try:
+        sqliteConnection = sqlite3.connect(database_filename)
+        cursor = sqliteConnection.cursor()
+
+        sqlite_update_query = f"""
+            UPDATE Note
+            SET
+                title=?,
+                content=?
+            WHERE
+                id=?;
+        """
+
+        cursor.execute(sqlite_update_query, (title, content, id))
+        sqliteConnection.commit()
+        cursor.close()
+    except sqlite3.Error as error:
+        print("Failed to update note", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+
+
 def print_notes():
     try:
         sqliteConnection = sqlite3.connect(database_filename)
@@ -84,7 +108,6 @@ def parse_note(input):
         content = input[first_period_index + 1::]
     return (title.strip(), content.strip())
 
-
 @click.group(invoke_without_command=True)
 @click.pass_context
 def cli(ctx=None):
@@ -98,11 +121,39 @@ def add_with_editor():
     save_note(title, content)
 
 @cli.command()
+@click.argument('id')
+def edit(id):
+    try:
+        sqliteConnection = sqlite3.connect(database_filename)
+        cursor = sqliteConnection.cursor()
+
+        sqlite_get_note_query = f"""
+            SELECT title, content
+            FROM Note
+            WHERE id={id};
+        """
+        cursor.execute(sqlite_get_note_query)
+        title, content = cursor.fetchone()
+        cursor.close()
+        editor_initial_content = title + ".\n" + content
+        updated_note_input = click.edit(editor_initial_content)
+        if updated_note_input is not None:
+            updated_title, updated_content = parse_note(updated_note_input)
+            update_note(id, updated_title, updated_content)
+    except sqlite3.Error as error:
+        print("Failed to insert data into sqlite table", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+
+
+@cli.command()
 @click.argument('content', nargs=-1)
 def add(content):
     if content:
         content = " ".join(content)
         title, content = parse_note(content)
+        save_note(title, content)
     else:
         add_with_editor()
 
