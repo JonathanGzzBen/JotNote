@@ -41,9 +41,9 @@ def save_note(title, content):
             INSERT INTO Note
             (title, content)
             VALUES
-            ('{title}', '{content}')
+            (?, ?)
         """
-        cursor.execute(sqlite_insert_query)
+        cursor.execute(sqlite_insert_query, (title, content))
         sqliteConnection.commit()
         cursor.close()
     except sqlite3.Error as error:
@@ -133,9 +133,9 @@ def edit(id):
         sqlite_get_note_query = f"""
             SELECT title, content
             FROM Note
-            WHERE id={id};
+            WHERE id=?;
         """
-        cursor.execute(sqlite_get_note_query)
+        cursor.execute(sqlite_get_note_query, (id))
         title, content = cursor.fetchone()
         cursor.close()
         editor_initial_content = title + ".\n" + content
