@@ -27,8 +27,7 @@ def create_database():
         print("Error while creating sqlite table", error)
     finally:
         if (sqliteConnection):
-            sqliteConnection.close()
-    
+            sqliteConnection.close()    
 
 def save_note(title, content):
     try:
@@ -75,6 +74,17 @@ def print_notes():
         if (sqliteConnection):
             sqliteConnection.close()
 
+def parse_note(input):
+    first_period_index = input.find(".")
+    if first_period_index == -1:
+        title = input[0:title_max_length_display + 1:]
+        content = input
+    else:
+        title = input[0:first_period_index:]
+        content = input[first_period_index + 1::]
+    return (title.strip(), content.strip())
+
+
 @click.group(invoke_without_command=True)
 @click.pass_context
 def cli(ctx=None):
@@ -84,8 +94,7 @@ def cli(ctx=None):
 def add_with_editor():
     content = click.edit()
     content = "".join(content)
-    title = content.split(".")[0]
-    content = content.split(".")[1]
+    title, content = parse_note(content)
     save_note(title, content)
 
 @cli.command()
@@ -93,9 +102,7 @@ def add_with_editor():
 def add(content):
     if content:
         content = " ".join(content)
-        title = content.split(".")[0]
-        content = content.split(".")[1]
-        save_note(title, content)
+        title, content = parse_note(content)
     else:
         add_with_editor()
 
