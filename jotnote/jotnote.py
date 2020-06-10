@@ -160,5 +160,8 @@ def add(content):
     else:
         add_with_editor()
 
-if __name__ == "__main__":
+def main():
     cli()
+
+if __name__ == "__main__":
+    main()

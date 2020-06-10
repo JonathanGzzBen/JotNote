@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from jotnote import app
+from jotnote.jotnote import cli
 
 def main():
-    app.cli()
+    cli()
 
 if __name__ == "__main__":
     main()

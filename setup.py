@@ -9,8 +9,9 @@ setup(
         'Click',
         'Tabulate'
     ],
-    entry_points='''
-        [console_scripts]
-        yourscript=yourpackage.scripts.yourscript:cli
-    ''',
+    entry_points= {
+        "console_scripts": [
+            "jotnote = jotnote.jotnote:cli"
+        ]
+    },
 )
