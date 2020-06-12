@@ -76,6 +76,25 @@ def update_note(id, title, content):
         if sqliteConnection:
             sqliteConnection.close()
 
+def delete_node(id):
+    try:
+        create_database_if_not_exists()
+        sqliteConnection = sqlite3.connect(database_filename)
+        cursor = sqliteConnection.cursor()
+
+        sqlite_delete_query = f"""
+            DELETE FROM Note
+            WHERE id=?
+        """
+        cursor.execute(sqlite_delete_query, (id))
+        sqliteConnection.commit()
+        cursor.close()
+    except sqlite3.Error as error:
+        print("Failed to delete node", error)
+    finally:
+        if sqliteConnection:
+            sqliteConnection.close()
+
 def print_notes():
     try:
         create_database_if_not_exists()
@@ -149,6 +168,11 @@ def edit(id):
         if sqliteConnection:
             sqliteConnection.close()
 
+@cli.command()
+@click.argument('id')
+def delete(id):
+    delete_node(id)
+    print(f"Note {id} deleted")
 
 @cli.command()
 @click.argument('content', nargs=-1)
