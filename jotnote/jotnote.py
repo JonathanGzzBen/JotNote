@@ -17,7 +17,7 @@ def parse_note(input):
 
 def print_notes():
     notes = notedata.get_notes()
-    print(tabulate(notes, headers=["Title"]))
+    click.echo(tabulate(notes, headers=["Title"]))
 
 @click.group(invoke_without_command=True)
 @click.pass_context
@@ -45,7 +45,7 @@ def edit(id):
 @click.argument('id')
 def delete(id):
     notedata.delete_node(id)
-    print(f"Note {id} deleted")
+    click.echo(f"Note {id} deleted")
 
 @cli.command()
 @click.argument('content', nargs=-1)
