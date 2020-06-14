@@ -72,7 +72,7 @@ def update_note(id, title, content):
         if sqliteConnection:
             sqliteConnection.close()
 
-def delete_node(id):
+def delete_note(id):
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)

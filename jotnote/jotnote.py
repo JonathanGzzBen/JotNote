@@ -44,7 +44,7 @@ def edit(id):
 @cli.command()
 @click.argument('id')
 def delete(id):
-    notedata.delete_node(id)
+    notedata.delete_note(id)
     click.echo(f"Note {id} deleted")
 
 @cli.command()
