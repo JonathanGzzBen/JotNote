@@ -8,7 +8,7 @@ from jotnote.data import notedata
 def parse_note(input):
     first_period_index = input.find(".")
     if first_period_index == -1:
-        title = input
+        title = ""
         content = input
     else:
         title = input[0:first_period_index:]
@@ -35,7 +35,10 @@ def add_with_editor():
 @click.argument('id')
 def edit(id):
     id, title, content = notedata.get_note(id)
-    editor_initial_content = title + ".\n" + content
+    if title == "":
+        editor_initial_content = content
+    else:
+        editor_initial_content = title + ".\n" + content
     updated_note_input = click.edit(editor_initial_content)
     if updated_note_input is not None:
         updated_title, updated_content = parse_note(updated_note_input)

@@ -120,6 +120,8 @@ def get_notes():
         sqlite_select_query = f""" 
             SELECT id,
             CASE
+            WHEN length(title) = 0 AND length(content) > {title_max_length_display} THEN (substr(content,0,{title_max_length_display}) || '...')
+            WHEN length(title) = 0 THEN substr(content,0,{title_max_length_display})
             WHEN length(title) >= {title_max_length_display} THEN (substr(title,0,{title_max_length_display}) || '...')
             ELSE title
             END AS 'title'
