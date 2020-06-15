@@ -31,8 +31,8 @@ def show():
     notes_to_display = []
     config = configuration.get_configuration()
     limit = config["limit"]
-    for index, note in zip(range(limit), notes):
-        id, title = note
+    for enumerated_note in zip(range(limit), notes):
+        id, title = enumerated_note[1]
         notes_to_display.append((id, title.replace("\n", " ")))
     click.echo(tabulate(notes_to_display, headers=["Title"], tablefmt="pretty"))
 

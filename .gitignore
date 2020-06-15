@@ -133,3 +133,6 @@ dmypy.json
 
 # Application Database
 jotnote.db
+
+# Configuration file
+config.json
