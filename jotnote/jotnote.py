@@ -27,10 +27,10 @@ def cli(ctx=None):
 
 @cli.command()
 def show():
-    notes = notedata.get_notes()
     notes_to_display = []
     config = configuration.get_configuration()
     limit = config["limit"]
+    notes = notedata.get_notes(config["orderby"])
     for enumerated_note in zip(range(limit), notes):
         id, title = enumerated_note[1]
         notes_to_display.append((id, title.replace("\n", " ")))
@@ -73,10 +73,14 @@ def delete(id):
 
 @cli.command()
 @click.option("--limit", "-l", default=0, help="Limit number of notes displayed.")
-def configure(limit):
+@click.option("--orderby", "-o", help="Way to sort notes displayed.", default="modif",
+                type=click.Choice(["modif", "creat"], case_sensitive=False))
+def configure(limit, orderby):
     config = configuration.get_configuration() 
     if limit != 0:
         config["limit"] = limit
+
+    config["orderby"] = orderby
     configuration.save_configuration(config)
 
 def main():

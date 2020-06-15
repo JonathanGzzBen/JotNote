@@ -119,12 +119,17 @@ def get_note(id):
         if sqliteConnection:
             sqliteConnection.close()
 
-def get_notes():
+def get_notes(orderby="modification_datetime"):
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)
         cursor = sqliteConnection.cursor()
 
+        if orderby == "creat":
+            orderby = "creation_datetime"
+        else:
+            orderby = "modification_datetime"
+ 
         sqlite_select_query = f""" 
             SELECT id,
             CASE
@@ -134,9 +139,9 @@ def get_notes():
             ELSE title
             END AS 'title'
             FROM Note
-            ORDER BY modification_datetime DESC;
+            ORDER BY {orderby} DESC;
         """
-        cursor.execute(sqlite_select_query)
+        cursor.execute(sqlite_select_query) 
         records = cursor.fetchall()
         cursor.close()
         return records

@@ -8,7 +8,8 @@ def create_configuration_file_if_not_exists():
         return
 
     default_configuration = {
-        "limit": 10
+        "limit": 10,
+        "orderby": "modif"
     }
     with open(configuration_filename, "w") as config_file:
         json.dump(default_configuration, config_file)
