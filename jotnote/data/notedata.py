@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 
 database_filename = "jotnote.db"
-title_max_length_display = 35
+title_max_length_display = 65
 
 def create_database_if_not_exists():
     if os.path.exists(database_filename):
