@@ -30,9 +30,9 @@ def show():
     notes_to_display = []
     config = configuration.get_configuration()
     limit = config["limit"]
-    notes = notedata.get_notes(config["orderby"])
-    for enumerated_note in zip(range(limit), notes):
-        id, title = enumerated_note[1]
+    notes = notedata.get_notes(config["orderby"], limit)
+    for note in notes:
+        id, title = note 
         notes_to_display.append((id, title.replace("\n", " ")))
     click.echo(tabulate(notes_to_display, headers=["Title"], tablefmt="pretty"))
 
@@ -72,14 +72,13 @@ def delete(id):
     click.echo(f"Note {id} deleted")
 
 @cli.command()
-@click.option("--limit", "-l", default=0, help="Limit number of notes displayed.")
+@click.option("--limit", "-l", help="Limit number of notes displayed.")
 @click.option("--orderby", "-o", help="Way to sort notes displayed.", default="modif",
                 type=click.Choice(["modif", "creat"], case_sensitive=False))
 def configure(limit, orderby):
     config = configuration.get_configuration() 
-    if limit != 0:
+    if limit:
         config["limit"] = limit
-
     config["orderby"] = orderby
     configuration.save_configuration(config)
 

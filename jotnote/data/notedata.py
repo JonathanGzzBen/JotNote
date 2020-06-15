@@ -119,7 +119,15 @@ def get_note(id):
         if sqliteConnection:
             sqliteConnection.close()
 
-def get_notes(orderby="modification_datetime"):
+def is_integer(n):
+    try:
+        float(n)
+    except ValueError:
+        return False
+    else:
+        return float(n).is_integer()
+
+def get_notes(orderby="modification_datetime", limit=0):
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)
@@ -139,8 +147,10 @@ def get_notes(orderby="modification_datetime"):
             ELSE title
             END AS 'title'
             FROM Note
-            ORDER BY {orderby} DESC;
+            ORDER BY {orderby} DESC
         """
+        if is_integer(limit) and limit not in ("0", 0):
+            sqlite_select_query += f"\nLIMIT {limit}"
         cursor.execute(sqlite_select_query) 
         records = cursor.fetchall()
         cursor.close()
