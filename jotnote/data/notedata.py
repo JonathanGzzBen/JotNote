@@ -2,6 +2,7 @@
 
 import sqlite3
 import os
+from datetime import datetime
 
 database_filename = "jotnote.db"
 title_max_length_display = 35
@@ -15,7 +16,9 @@ def create_database_if_not_exists():
             CREATE TABLE IF NOT EXISTS Note (
                 id INTEGER PRIMARY KEY,
                 title TEXT NOT NULL,
-                content TEXT NOT NULL
+                content TEXT NOT NULL,
+                creation_datetime NOT NULL,
+                modification_datetime NOT NULL
             );
         """
         cursor = sqliteConnection.cursor()
@@ -36,11 +39,14 @@ def save_note(title, content):
 
         sqlite_insert_query = f"""
             INSERT INTO Note
-            (title, content)
+            (title, content, creation_datetime, modification_datetime)
             VALUES
-            (?, ?)
+            (?, ?, ?, ?)
         """
-        cursor.execute(sqlite_insert_query, (title, content))
+        creation_datetime = datetime.now()
+        modification_datetime = datetime.now()
+        sqlite_query_arguments = (title, content, creation_datetime, modification_datetime)
+        cursor.execute(sqlite_insert_query, sqlite_query_arguments)
         sqliteConnection.commit()
         cursor.close()
     except sqlite3.Error as error:
