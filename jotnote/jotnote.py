@@ -25,7 +25,11 @@ def cli(ctx=None):
 @cli.command()
 def show():
     notes = notedata.get_notes()
-    click.echo(tabulate(notes, headers=["Title"], tablefmt="pretty"))
+    notes_to_display = []
+    for note in notes:
+        id, title = note
+        notes_to_display.append((id, title.replace("\n", " ")))
+    click.echo(tabulate(notes_to_display, headers=["Title"], tablefmt="pretty"))
 
 @cli.command()
 @click.argument('content', nargs=-1)
