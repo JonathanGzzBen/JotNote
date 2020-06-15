@@ -15,15 +15,27 @@ def parse_note(input):
         content = input[first_period_index + 1::]
     return (title.strip(), content.strip())
 
-def print_notes():
-    notes = notedata.get_notes()
-    click.echo(tabulate(notes, headers=["Title"]))
-
 @click.group(invoke_without_command=True)
 @click.pass_context
 def cli(ctx=None):
     if ctx.invoked_subcommand is None:
-        print_notes()
+        click.echo("[jotnote show]")
+        show()
+
+@cli.command()
+def show():
+    notes = notedata.get_notes()
+    click.echo(tabulate(notes, headers=["Title"], tablefmt="pretty"))
+
+@cli.command()
+@click.argument('content', nargs=-1)
+def add(content):
+    if content:
+        content = " ".join(content)
+        title, content = parse_note(content)
+        notedata.save_note(title, content)
+    else:
+        add_with_editor()
 
 def add_with_editor():
     content = click.edit()
@@ -49,16 +61,6 @@ def edit(id):
 def delete(id):
     notedata.delete_note(id)
     click.echo(f"Note {id} deleted")
-
-@cli.command()
-@click.argument('content', nargs=-1)
-def add(content):
-    if content:
-        content = " ".join(content)
-        title, content = parse_note(content)
-        notedata.save_note(title, content)
-    else:
-        add_with_editor()
 
 def main():
     cli()
