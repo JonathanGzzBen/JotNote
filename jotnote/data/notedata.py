@@ -119,7 +119,7 @@ def get_note(id):
         if sqliteConnection:
             sqliteConnection.close()
 
-def get_notes(order_by="modification_datetime"):
+def get_notes():
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)

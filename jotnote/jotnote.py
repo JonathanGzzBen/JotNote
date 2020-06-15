@@ -4,6 +4,9 @@ import click
 from tabulate import tabulate
 from jotnote.note import Note
 from jotnote.data import notedata
+import jotnote.configuration as configuration
+
+configuration_filename = "config.json"
 
 def parse_note(input):
     first_period_index = input.find(".")
@@ -26,7 +29,9 @@ def cli(ctx=None):
 def show():
     notes = notedata.get_notes()
     notes_to_display = []
-    for note in notes:
+    config = configuration.get_configuration()
+    limit = config["limit"]
+    for index, note in zip(range(limit), notes):
         id, title = note
         notes_to_display.append((id, title.replace("\n", " ")))
     click.echo(tabulate(notes_to_display, headers=["Title"], tablefmt="pretty"))
@@ -65,6 +70,14 @@ def edit(id):
 def delete(id):
     notedata.delete_note(id)
     click.echo(f"Note {id} deleted")
+
+@cli.command()
+@click.option("--limit", "-l", default=0, help="Limit number of notes displayed.")
+def configure(limit):
+    config = configuration.get_configuration() 
+    if limit != 0:
+        config["limit"] = limit
+    configuration.save_configuration(config)
 
 def main():
     cli()
