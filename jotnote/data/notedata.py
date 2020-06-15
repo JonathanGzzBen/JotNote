@@ -17,10 +17,9 @@ def create_database_if_not_exists():
                 id INTEGER PRIMARY KEY,
                 title TEXT NOT NULL,
                 content TEXT NOT NULL,
-                creation_datetime NOT NULL,
-                modification_datetime NOT NULL
-            );
-        """
+                creation_datetime TEXT NOT NULL,
+                modification_datetime TEXT NOT NULL);
+            """
         cursor = sqliteConnection.cursor()
         cursor.execute(sqlite_create_table_query)
         sqliteConnection.commit()
@@ -65,11 +64,14 @@ def update_note(id, title, content):
             UPDATE Note
             SET
                 title=?,
-                content=?
+                content=?,
+                modification_datetime=?
             WHERE
                 id=?;
         """
-        cursor.execute(sqlite_update_query, (title, content, id))
+        modification_date = datetime.now()
+        sqlite_query_arguments = (title, content, modification_date, id)
+        cursor.execute(sqlite_update_query, sqlite_query_arguments)
         sqliteConnection.commit()
         cursor.close()
     except sqlite3.Error as error:
@@ -117,7 +119,7 @@ def get_note(id):
         if sqliteConnection:
             sqliteConnection.close()
 
-def get_notes():
+def get_notes(order_by="modification_datetime"):
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)
@@ -132,6 +134,7 @@ def get_notes():
             ELSE title
             END AS 'title'
             FROM Note
+            ORDER BY modification_datetime DESC;
         """
         cursor.execute(sqlite_select_query)
         records = cursor.fetchall()
