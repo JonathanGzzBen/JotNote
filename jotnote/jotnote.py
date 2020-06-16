@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 import click
+import json
 from tabulate import tabulate
 from jotnote.note import Note
 from jotnote.data import notedata
 import jotnote.configuration as configuration
-
-configuration_filename = "config.json"
 
 def parse_note(input):
     first_period_index = input.find(".")
@@ -42,7 +41,7 @@ def add(content):
     if content:
         content = " ".join(content)
         title, content = parse_note(content)
-        notedata.save_note(title, content)
+        notedata.create_note(title, content)
     else:
         add_with_editor()
 
@@ -50,7 +49,7 @@ def add_with_editor():
     content = click.edit()
     content = "".join(content)
     title, content = parse_note(content)
-    notedata.save_note(title, content)
+    notedata.create_note(title, content)
 
 @cli.command()
 @click.argument('id')
@@ -81,6 +80,21 @@ def configure(limit, orderby):
         config["limit"] = limit
     config["orderby"] = orderby
     configuration.save_configuration(config)
+
+@cli.command()
+@click.argument("filename")
+def export(filename):
+    all_notes = notedata.get_all_notes()
+    with open(filename, "w") as export_file:
+        json.dump(all_notes, export_file)
+
+@cli.command(name="import")
+@click.argument("filename")
+def importnotes(filename):
+    with open(filename, "r") as import_file:
+        imported_notes = json.load(import_file)
+    for note in imported_notes:
+        notedata.save_note(note)
 
 def main():
     cli()

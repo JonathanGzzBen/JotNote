@@ -30,12 +30,11 @@ def create_database_if_not_exists():
         if (sqliteConnection):
             sqliteConnection.close()
 
-def save_note(title, content):
+def create_note(title, content):
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_filename)
         cursor = sqliteConnection.cursor()
-
         sqlite_insert_query = f"""
             INSERT INTO Note
             (title, content, creation_datetime, modification_datetime)
@@ -53,6 +52,31 @@ def save_note(title, content):
     finally:
         if (sqliteConnection):
             sqliteConnection.close()
+
+def save_note(note):
+    try:
+        create_database_if_not_exists()
+        sqliteConnection = sqlite3.connect(database_filename)
+        cursor = sqliteConnection.cursor()
+        sqlite_insert_query = f"""
+            INSERT INTO Note
+            (title, content, creation_datetime, modification_datetime)
+            VALUES
+            (?, ?, ?, ?)
+        """
+        _, title, content, creation_datetime, modification_datetime = note
+        modification_datetime = datetime.now()
+        sqlite_query_arguments = (title, content, creation_datetime, modification_datetime)
+        cursor.execute(sqlite_insert_query, sqlite_query_arguments)
+        sqliteConnection.commit()
+        cursor.close()
+    except sqlite3.Error as error:
+        print("Failed to insert data into sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+
+
 
 def update_note(id, title, content):
     try:
@@ -152,6 +176,26 @@ def get_notes(orderby="modification_datetime", limit=0):
         if is_integer(limit) and limit not in ("0", 0):
             sqlite_select_query += f"\nLIMIT {limit}"
         cursor.execute(sqlite_select_query) 
+        records = cursor.fetchall()
+        cursor.close()
+        return records
+    except sqlite3.Error as error:
+        print("Failed to read data from sqlite table", error)
+    finally:
+        if (sqliteConnection):
+            sqliteConnection.close()
+
+def get_all_notes():
+    try:
+        create_database_if_not_exists()
+        sqliteConnection = sqlite3.connect(database_filename)
+        cursor = sqliteConnection.cursor()
+
+        sqlite_select_all_query = f""" 
+            SELECT *
+            FROM Note
+        """
+        cursor.execute(sqlite_select_all_query) 
         records = cursor.fetchall()
         cursor.close()
         return records
