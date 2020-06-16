@@ -133,7 +133,7 @@ def get_notes(orderby="modification_datetime", limit=0):
         sqliteConnection = sqlite3.connect(database_filename)
         cursor = sqliteConnection.cursor()
 
-        if orderby == "creat":
+        if orderby == "creation":
             orderby = "creation_datetime"
         else:
             orderby = "modification_datetime"

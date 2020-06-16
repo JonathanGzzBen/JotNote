@@ -73,8 +73,8 @@ def delete(id):
 
 @cli.command()
 @click.option("--limit", "-l", help="Limit number of notes displayed.")
-@click.option("--orderby", "-o", help="Way to sort notes displayed.", default="modif",
-                type=click.Choice(["modif", "creat"], case_sensitive=False))
+@click.option("--orderby", "-o", default="modification",
+                type=click.Choice(["modification", "creation"], case_sensitive=False))
 def configure(limit, orderby):
     config = configuration.get_configuration() 
     if limit:
