@@ -3,14 +3,15 @@
 import json
 import os
 
-directory_path = os.path.dirname(__file__)
-configuration_path = os.path.join(directory_path, "config.json")
+application_data_dir = os.path.join(os.getenv("HOME"), ".jotnote")
+configuration_path = os.path.join(application_data_dir, "config.json")
 
 
 def create_configuration_file_if_not_exists():
     if os.path.exists(configuration_path):
         return
 
+    os.makedirs(application_data_dir, exist_ok=True)
     default_configuration = {
         "limit": 10,
         "orderby": "modification"

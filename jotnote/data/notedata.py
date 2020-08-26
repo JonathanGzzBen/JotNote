@@ -4,8 +4,8 @@ import sqlite3
 import os
 from datetime import datetime
 
-directory_path = os.path.dirname(__file__)
-database_path = os.path.join(directory_path, "jotnote.db")
+application_data_dir = os.path.join(os.getenv("HOME"), ".jotnote")
+database_path = os.path.join(application_data_dir, "jotnote.db")
 title_max_length_display = 65
 
 
@@ -13,6 +13,7 @@ def create_database_if_not_exists():
     if os.path.exists(database_path):
         return
     try:
+        os.makedirs(application_data_dir, exist_ok=True)
         sqliteConnection = sqlite3.connect(database_path)
         sqlite_create_table_query = """
             CREATE TABLE IF NOT EXISTS Note (
