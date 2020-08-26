@@ -4,14 +4,16 @@ import sqlite3
 import os
 from datetime import datetime
 
-database_filename = "jotnote.db"
+directory_path = os.path.dirname(__file__)
+database_path = os.path.join(directory_path, "jotnote.db")
 title_max_length_display = 65
 
+
 def create_database_if_not_exists():
-    if os.path.exists(database_filename):
+    if os.path.exists(database_path):
         return
     try:
-        sqliteConnection = sqlite3.connect(database_filename)
+        sqliteConnection = sqlite3.connect(database_path)
         sqlite_create_table_query = """
             CREATE TABLE IF NOT EXISTS Note (
                 id INTEGER PRIMARY KEY,
@@ -30,10 +32,11 @@ def create_database_if_not_exists():
         if (sqliteConnection):
             sqliteConnection.close()
 
+
 def create_note(title, content):
     try:
         create_database_if_not_exists()
-        sqliteConnection = sqlite3.connect(database_filename)
+        sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
         sqlite_insert_query = f"""
             INSERT INTO Note
@@ -43,7 +46,8 @@ def create_note(title, content):
         """
         creation_datetime = datetime.now()
         modification_datetime = datetime.now()
-        sqlite_query_arguments = (title, content, creation_datetime, modification_datetime)
+        sqlite_query_arguments = (
+            title, content, creation_datetime, modification_datetime)
         cursor.execute(sqlite_insert_query, sqlite_query_arguments)
         sqliteConnection.commit()
         cursor.close()
@@ -53,10 +57,11 @@ def create_note(title, content):
         if (sqliteConnection):
             sqliteConnection.close()
 
+
 def save_note(note):
     try:
         create_database_if_not_exists()
-        sqliteConnection = sqlite3.connect(database_filename)
+        sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
         sqlite_insert_query = f"""
             INSERT INTO Note
@@ -66,7 +71,8 @@ def save_note(note):
         """
         _, title, content, creation_datetime, modification_datetime = note
         modification_datetime = datetime.now()
-        sqlite_query_arguments = (title, content, creation_datetime, modification_datetime)
+        sqlite_query_arguments = (
+            title, content, creation_datetime, modification_datetime)
         cursor.execute(sqlite_insert_query, sqlite_query_arguments)
         sqliteConnection.commit()
         cursor.close()
@@ -77,11 +83,10 @@ def save_note(note):
             sqliteConnection.close()
 
 
-
 def update_note(id, title, content):
     try:
         create_database_if_not_exists()
-        sqliteConnection = sqlite3.connect(database_filename)
+        sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
 
         sqlite_update_query = f"""
@@ -104,10 +109,11 @@ def update_note(id, title, content):
         if sqliteConnection:
             sqliteConnection.close()
 
+
 def delete_note(id):
     try:
         create_database_if_not_exists()
-        sqliteConnection = sqlite3.connect(database_filename)
+        sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
 
         sqlite_delete_query = f"""
@@ -123,10 +129,11 @@ def delete_note(id):
         if sqliteConnection:
             sqliteConnection.close()
 
+
 def get_note(id):
     try:
         create_database_if_not_exists()
-        sqliteConnection = sqlite3.connect(database_filename)
+        sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
         sqlite_get_note_query = f"""
             SELECT id, title, content
@@ -143,6 +150,7 @@ def get_note(id):
         if sqliteConnection:
             sqliteConnection.close()
 
+
 def is_integer(n):
     try:
         float(n)
@@ -151,17 +159,18 @@ def is_integer(n):
     else:
         return float(n).is_integer()
 
+
 def get_notes(orderby="modification_datetime", limit=0):
     try:
         create_database_if_not_exists()
-        sqliteConnection = sqlite3.connect(database_filename)
+        sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
 
         if orderby == "creation":
             orderby = "creation_datetime"
         else:
             orderby = "modification_datetime"
- 
+
         sqlite_select_query = f""" 
             SELECT id,
             CASE
@@ -175,7 +184,7 @@ def get_notes(orderby="modification_datetime", limit=0):
         """
         if is_integer(limit) and limit not in ("0", 0):
             sqlite_select_query += f"\nLIMIT {limit}"
-        cursor.execute(sqlite_select_query) 
+        cursor.execute(sqlite_select_query)
         records = cursor.fetchall()
         cursor.close()
         return records
@@ -185,17 +194,18 @@ def get_notes(orderby="modification_datetime", limit=0):
         if (sqliteConnection):
             sqliteConnection.close()
 
+
 def get_all_notes():
     try:
         create_database_if_not_exists()
-        sqliteConnection = sqlite3.connect(database_filename)
+        sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
 
         sqlite_select_all_query = f""" 
             SELECT *
             FROM Note
         """
-        cursor.execute(sqlite_select_all_query) 
+        cursor.execute(sqlite_select_all_query)
         records = cursor.fetchall()
         cursor.close()
         return records
