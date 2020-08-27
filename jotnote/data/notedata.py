@@ -9,36 +9,40 @@ database_path = os.path.join(application_data_dir, "jotnote.db")
 title_max_length_display = 65
 
 
-def create_database_if_not_exists():
-    if os.path.exists(database_path):
-        return
-    sqliteConnection = None
-    try:
-        os.makedirs(application_data_dir, exist_ok=True)
-        sqliteConnection = sqlite3.connect(database_path)
-        sqlite_create_table_query = """
-            CREATE TABLE IF NOT EXISTS Note (
-                id INTEGER PRIMARY KEY,
-                title TEXT NOT NULL,
-                content TEXT NOT NULL,
-                creation_datetime TEXT NOT NULL,
-                modification_datetime TEXT NOT NULL);
-            """
-        cursor = sqliteConnection.cursor()
-        cursor.execute(sqlite_create_table_query)
-        sqliteConnection.commit()
-        cursor.close()
-    except sqlite3.Error as error:
-        print("Error while creating sqlite table", error)
-    finally:
-        if (sqliteConnection):
-            sqliteConnection.close()
+def create_database_if_not_exists(function_using_database):
+    def decorator(*args, **kwargs):
+        if os.path.exists(database_path):
+            return function_using_database(*args, **kwargs)
+
+        sqliteConnection = None
+        try:
+            os.makedirs(application_data_dir, exist_ok=True)
+            sqliteConnection = sqlite3.connect(database_path)
+            sqlite_create_table_query = """
+                CREATE TABLE IF NOT EXISTS Note (
+                    id INTEGER PRIMARY KEY,
+                    title TEXT NOT NULL,
+                    content TEXT NOT NULL,
+                    creation_datetime TEXT NOT NULL,
+                    modification_datetime TEXT NOT NULL);
+                """
+            cursor = sqliteConnection.cursor()
+            cursor.execute(sqlite_create_table_query)
+            sqliteConnection.commit()
+            cursor.close()
+            return function_using_database(*args, **kwargs)
+        except sqlite3.Error as error:
+            print("Error while creating sqlite table", error)
+        finally:
+            if (sqliteConnection):
+                sqliteConnection.close()
+    return decorator
 
 
+@create_database_if_not_exists
 def create_note(title, content):
     sqliteConnection = None
     try:
-        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
         sqlite_insert_query = f"""
@@ -61,10 +65,10 @@ def create_note(title, content):
             sqliteConnection.close()
 
 
+@create_database_if_not_exists
 def save_note(note):
     sqliteConnection = None
     try:
-        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
         sqlite_insert_query = f"""
@@ -87,10 +91,10 @@ def save_note(note):
             sqliteConnection.close()
 
 
+@create_database_if_not_exists
 def update_note(id, title, content):
     sqliteConnection = None
     try:
-        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
 
@@ -115,10 +119,10 @@ def update_note(id, title, content):
             sqliteConnection.close()
 
 
+@create_database_if_not_exists
 def delete_note(id):
     sqliteConnection = None
     try:
-        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
 
@@ -136,10 +140,10 @@ def delete_note(id):
             sqliteConnection.close()
 
 
+@create_database_if_not_exists
 def get_note(id):
     sqliteConnection = None
     try:
-        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
         sqlite_get_note_query = f"""
@@ -167,10 +171,10 @@ def is_integer(n):
         return float(n).is_integer()
 
 
+@create_database_if_not_exists
 def get_notes(orderby="modification_datetime", limit=0):
     sqliteConnection = None
     try:
-        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
 
@@ -203,10 +207,10 @@ def get_notes(orderby="modification_datetime", limit=0):
             sqliteConnection.close()
 
 
+@create_database_if_not_exists
 def get_all_notes():
     sqliteConnection = None
     try:
-        create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
         cursor = sqliteConnection.cursor()
 
