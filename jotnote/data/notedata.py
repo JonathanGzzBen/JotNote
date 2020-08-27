@@ -12,6 +12,7 @@ title_max_length_display = 65
 def create_database_if_not_exists():
     if os.path.exists(database_path):
         return
+    sqliteConnection = None
     try:
         os.makedirs(application_data_dir, exist_ok=True)
         sqliteConnection = sqlite3.connect(database_path)
@@ -35,6 +36,7 @@ def create_database_if_not_exists():
 
 
 def create_note(title, content):
+    sqliteConnection = None
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
@@ -60,6 +62,7 @@ def create_note(title, content):
 
 
 def save_note(note):
+    sqliteConnection = None
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
@@ -85,6 +88,7 @@ def save_note(note):
 
 
 def update_note(id, title, content):
+    sqliteConnection = None
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
@@ -112,6 +116,7 @@ def update_note(id, title, content):
 
 
 def delete_note(id):
+    sqliteConnection = None
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
@@ -132,6 +137,7 @@ def delete_note(id):
 
 
 def get_note(id):
+    sqliteConnection = None
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
@@ -162,6 +168,7 @@ def is_integer(n):
 
 
 def get_notes(orderby="modification_datetime", limit=0):
+    sqliteConnection = None
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
@@ -197,6 +204,7 @@ def get_notes(orderby="modification_datetime", limit=0):
 
 
 def get_all_notes():
+    sqliteConnection = None
     try:
         create_database_if_not_exists()
         sqliteConnection = sqlite3.connect(database_path)
