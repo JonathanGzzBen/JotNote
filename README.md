@@ -71,3 +71,9 @@ This is the default command, you can also use:
 Opens note with corresponding ID in your default text editor.
 
 `$ jotnote edit 1`
+
+### Delete
+
+Delete note with corresponding ID.
+
+`$ jotnote delete 1`
