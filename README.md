@@ -65,3 +65,9 @@ Displays your notes, you can change the maximum number of notes displayed and th
 This is the default command, you can also use:
 
 `$ jotnote`
+
+### Edit
+
+Opens note with corresponding ID in your default text editor.
+
+`$ jotnote edit 1`
