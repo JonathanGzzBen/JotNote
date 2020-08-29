@@ -46,7 +46,7 @@ def show():
 
 
 @cli.command()
-@click.argument('content', nargs=-1)
+@click.argument('title', nargs=-1)
 def add(content):
     if content:
         content = " ".join(content)

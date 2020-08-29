@@ -8,9 +8,9 @@ A Unix Command-Line Tool to jot notes.
 
 #### Syntax
 
-`jotnote add [options] [content]`
+`jotnote add [options] [title]`
 
-This will create a note with given content. You don't need to enclose it with quotes.
+This will create a note with given title. You don't need to enclose it with quotes.
 
 #### Examples
 
