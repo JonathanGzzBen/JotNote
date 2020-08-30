@@ -4,11 +4,31 @@ A Unix Command-Line Tool to jot notes.
 
 ## Table of Contents
 
+- [Installation](#installation)
 - [Commands](#commands)
   - [Add](#add)
   - [Show](#show)
   - [Edit](#edit)
   - [Delete](#delete)
+
+## Installation
+
+```shell
+# Update setuptools
+$ python3 -m pip install --upgrade setuptools
+
+#Clone repository
+$ git clone https://github.com/JonathanGzzBen/JotNote.git
+
+# Install package
+$ cd JotNote
+$ sudo python3 setup.py install
+
+# Write your notes
+$ jotnote
+[jotnote show]
+No notes found.
+```
 
 ## Commands
 
