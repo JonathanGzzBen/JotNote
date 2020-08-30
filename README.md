@@ -2,17 +2,19 @@
 
 A Unix Command-Line Tool to jot notes.
 
+## Table of Contents
+
+- [Commands](#commands)
+  - [Add](#add)
+  - [Show](#show)
+  - [Edit](#edit)
+  - [Delete](#delete)
+
 ## Commands
 
 ### Add
 
-#### Syntax
-
-`jotnote add [options] [title]`
-
 This will create a note with given title. You don't need to enclose it with quotes.
-
-#### Examples
 
 `$ jotnote add This is the title`
 
