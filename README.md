@@ -43,7 +43,7 @@ You can also execute it without any parameter to write your note in your default
 
 If you save and quit in your text editor after writing this:
 
-```text
+```shell
 This is the title.
 And this the content
 ```
