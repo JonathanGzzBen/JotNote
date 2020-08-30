@@ -5,6 +5,7 @@ A Unix Command-Line Tool to jot notes.
 ## Table of Contents
 
 - [Installation](#installation)
+  - [Uninstall](#uninstall)
 - [Commands](#commands)
   - [Add](#add)
   - [Show](#show)
@@ -27,6 +28,16 @@ $ (cd JotNote && pip install .)
 $ jotnote
 [jotnote show]
 No notes found.
+```
+
+### Uninstall
+
+```shell
+# Uninstall package
+$ pip uninstall jotnote
+
+# Remove data and configurations
+$ rm ~/.jotnote -r
 ```
 
 ## Commands
