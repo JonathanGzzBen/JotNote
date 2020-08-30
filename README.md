@@ -62,11 +62,28 @@ You will get this:
 
 Displays your notes, you can change the maximum number of notes displayed and the sort method using the `configure` command.
 
-`$ jotnote show`
+```shell
+$ jotnote show
++---+------------------------------------+
+|   |               Title                |
++---+------------------------------------+
+| 2 |            Second note             |
+| 1 | This is the title of my first note |
++---+------------------------------------+
+```
 
 This is the default command, you can also use:
 
-`$ jotnote`
+```shell
+$ jotnote
+[jotnote show]
++---+------------------------------------+
+|   |               Title                |
++---+------------------------------------+
+| 2 |            Second note             |
+| 1 | This is the title of my first note |
++---+------------------------------------+
+```
 
 ### Edit
 
