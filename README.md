@@ -95,4 +95,7 @@ Opens note with corresponding ID in your default text editor.
 
 Delete note with corresponding ID.
 
-`$ jotnote delete 1`
+```shell
+$ jotnote delete 1
+Note 1 deleted
+```
