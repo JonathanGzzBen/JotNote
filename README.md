@@ -15,14 +15,13 @@ A Unix Command-Line Tool to jot notes.
 
 ```shell
 # Update setuptools
-$ python3 -m pip install --upgrade setuptools
+$ pip install --upgrade setuptools
 
-#Clone repository
+# Clone repository
 $ git clone https://github.com/JonathanGzzBen/JotNote.git
 
 # Install package
-$ cd JotNote
-$ sudo python3 setup.py install
+$ (cd JotNote && pip install .)
 
 # Write your notes
 $ jotnote
