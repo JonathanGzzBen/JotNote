@@ -47,10 +47,10 @@ def show():
 
 @cli.command()
 @click.argument('title', nargs=-1)
-def add(content):
-    if content:
-        content = " ".join(content)
-        title, content = parse_note(content)
+def add(title):
+    if title:
+        title = " ".join(title)
+        title, content = parse_note(title)
         notedata.create_note(title, content)
     else:
         add_with_editor()
