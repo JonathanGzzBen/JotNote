@@ -86,26 +86,32 @@ def delete(id):
 
 @cli.command()
 @click.option("--limit", "-l", help="Limit number of notes displayed.")
-@click.option("--orderby", "-o", default="modification",
+@click.option("--orderby", "-o",
               type=click.Choice(["modification", "creation"], case_sensitive=False))
 def configure(limit, orderby):
     config = configuration.get_configuration()
+    # If no parameter passed
+    if not (limit or orderby):
+        config_as_list_of_tuples = list(config.items())
+        click.echo(print(tabulate(config_as_list_of_tuples,
+                                  headers=["Configuration", "Value"])))
     if limit:
         config["limit"] = limit
-    config["orderby"] = orderby
+    if orderby:
+        config["orderby"] = orderby
     configuration.save_configuration(config)
 
 
-@cli.command()
-@click.argument("filename")
+@ cli.command()
+@ click.argument("filename")
 def export(filename):
     all_notes = notedata.get_all_notes()
     with open(filename, "w") as export_file:
         json.dump(all_notes, export_file)
 
 
-@cli.command(name="import")
-@click.argument("filename")
+@ cli.command(name="import")
+@ click.argument("filename")
 def importnotes(filename):
     with open(filename, "r") as import_file:
         imported_notes = json.load(import_file)
