@@ -41,6 +41,9 @@ def create_database_if_not_exists(function_using_database):
 
 @create_database_if_not_exists
 def create_note(title, content):
+    if title == "":
+        return
+
     sqliteConnection = None
     try:
         sqliteConnection = sqlite3.connect(database_path)
@@ -93,6 +96,8 @@ def save_note(note):
 
 @create_database_if_not_exists
 def update_note(id, title, content):
+    if title == "":
+        return
     sqliteConnection = None
     try:
         sqliteConnection = sqlite3.connect(database_path)
