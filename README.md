@@ -129,3 +129,27 @@ Delete note with corresponding ID.
 $ jotnote delete 1
 Note 1 deleted
 ```
+
+### Configure
+
+Check or modify your configurations.
+
+```shell
+$ jotnote configure --help
+Usage: jotnote configure [OPTIONS]
+
+Options:
+  -l, --limit INTEGER             Limit number of notes displayed.
+  -o, --orderby [modification|creation]
+  --help                          Show this message and exit.
+```
+
+If you pass no options, your current configurations will be printed.
+
+```shell
+$ jotnote configure
+Configuration    Value
+---------------  --------
+limit            5
+orderby          creation
+```
