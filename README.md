@@ -11,6 +11,7 @@ A Unix Command-Line Tool to jot notes.
   - [Show](#show)
   - [Edit](#edit)
   - [Delete](#delete)
+  - [Configure](#configure)
 
 ## Installation
 
