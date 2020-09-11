@@ -58,6 +58,8 @@ def add(title):
 
 def add_with_editor():
     content = click.edit()
+    if not content:
+        return
     content = "".join(content)
     title, content = parse_note(content)
     notedata.create_note(title, content)
