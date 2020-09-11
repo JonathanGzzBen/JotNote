@@ -11,8 +11,8 @@ import jotnote.configuration as configuration
 def parse_note(input):
     first_period_index = input.find(".")
     if first_period_index == -1:
-        title = ""
-        content = input
+        title = input
+        content = ""
     else:
         title = input[0:first_period_index:]
         content = input[first_period_index + 1::]
