@@ -30,6 +30,7 @@ def cli(ctx=None):
 @cli.command()
 @click.argument('id', default=0, type=int)
 def show(id=0):
+    click.echo("")
     if id:
         note = notedata.get_note(id)
         id, title, content = note
@@ -90,7 +91,7 @@ def edit(id):
 @click.argument('id')
 def delete(id):
     notedata.delete_note(id)
-    click.echo(f"Note {id} deleted")
+    click.echo(f"\nNote {id} deleted")
 
 
 @cli.command()
@@ -102,6 +103,7 @@ def configure(limit, orderby):
     # If no parameter passed
     if not (limit or orderby):
         config_as_list_of_tuples = list(config.items())
+        click.echo("")
         click.echo(print(tabulate(config_as_list_of_tuples,
                                   headers=["Configuration", "Value"])))
     if limit:

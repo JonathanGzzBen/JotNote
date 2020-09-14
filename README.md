@@ -95,6 +95,7 @@ Displays your notes, you can change the maximum number of notes displayed and th
 
 ```shell
 $ jotnote show
+
 +---+------------------------------------+
 |   |               Title                |
 +---+------------------------------------+
@@ -108,6 +109,7 @@ This is the default command, you can also use:
 ```shell
 $ jotnote
 [jotnote show]
+
 +---+------------------------------------+
 |   |               Title                |
 +---+------------------------------------+
@@ -120,6 +122,7 @@ You can directly print the contents of a note by passing the Id to the `show` co
 
 ```shell
 $ jotnote show 1
+
 This is the title of my first note.
 
 And this is the content.
@@ -137,6 +140,7 @@ Delete note with corresponding ID.
 
 ```shell
 $ jotnote delete 1
+
 Note 1 deleted
 ```
 
@@ -158,6 +162,7 @@ If you pass no options, your current configurations will be printed.
 
 ```shell
 $ jotnote configure
+
 Configuration    Value
 ---------------  --------
 limit            5
