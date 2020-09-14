@@ -28,7 +28,14 @@ def cli(ctx=None):
 
 
 @cli.command()
-def show():
+@click.argument('id', default=0, type=int)
+def show(id=0):
+    if id:
+        note = notedata.get_note(id)
+        id, title, content = note
+        click.echo(title + ".\n")
+        click.echo(content)
+        return
     notes_to_display = []
     config = configuration.get_configuration()
     limit = config["limit"]

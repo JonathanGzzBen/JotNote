@@ -156,7 +156,7 @@ def get_note(id):
             FROM Note
             WHERE id=?
         """
-        cursor.execute(sqlite_get_note_query, (id))
+        cursor.execute(sqlite_get_note_query, str(id))
         note_found = cursor.fetchone()
         cursor.close()
         return note_found

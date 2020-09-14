@@ -116,6 +116,15 @@ $ jotnote
 +---+------------------------------------+
 ```
 
+You can directly print the contents of a note by passing the Id to the `show` command.
+
+```shell
+$ jotnote show 1
+This is the title of my first note.
+
+And this is the content.
+```
+
 ### Edit
 
 Opens note with corresponding ID in your default text editor.
