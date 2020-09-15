@@ -114,18 +114,16 @@ def configure(limit, orderby):
 
 
 @ cli.command()
-@ click.argument("filename")
-def export(filename):
+@ click.argument("file", type=click.File("w"))
+def export(file):
     all_notes = notedata.get_all_notes()
-    with open(filename, "w") as export_file:
-        json.dump(all_notes, export_file)
+    json.dump(all_notes, file)
 
 
 @ cli.command(name="import")
-@ click.argument("filename")
-def importnotes(filename):
-    with open(filename, "r") as import_file:
-        imported_notes = json.load(import_file)
+@ click.argument("file", type=click.File('r'))
+def import_notes(file):
+    imported_notes = json.load(file)
     for note in imported_notes:
         notedata.save_note(note)
 
