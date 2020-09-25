@@ -80,7 +80,7 @@ def edit(id):
     if title == "":
         editor_initial_content = content
     else:
-        editor_initial_content = title + ".\n" + content
+        editor_initial_content = title + ".\n\n" + content
     updated_note_input = click.edit(editor_initial_content)
     if updated_note_input is not None:
         updated_title, updated_content = parse_note(updated_note_input)
