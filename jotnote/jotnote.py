@@ -9,13 +9,20 @@ import jotnote.configuration as configuration
 
 
 def parse_note(input):
-    first_period_index = input.find(".")
-    if first_period_index == -1:
+    first_point_index = input.find(".")
+    first_line_break_index = input.find("\n")
+    title_end_index = -1
+    if (first_line_break_index < first_point_index or first_point_index == -1):
+        title_end_index = first_line_break_index
+    elif (first_point_index < first_line_break_index):
+        title_end_index = first_point_index
+
+    if title_end_index == -1:
         title = input
         content = ""
     else:
-        title = input[0:first_period_index:]
-        content = input[first_period_index + 1::]
+        title = input[0:title_end_index:]
+        content = input[title_end_index + 1::]
     return (title.strip(), content.strip())
 
 
