@@ -15,6 +15,15 @@ A Unix Command-Line Tool to jot notes.
 
 ## Installation
 
+### From release
+
+Download [latest release](https://github.com/JonathanGzzBen/JotNote/releases/latest), head to downloads directory and install using [pip](https://pypi.org/project/pip/).
+
+```shell
+pip install JotNote-1.0.0.tar.gz
+```
+
+### From repository
 ```shell
 # Update setuptools
 $ pip install --upgrade setuptools
