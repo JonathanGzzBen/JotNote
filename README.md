@@ -20,7 +20,7 @@ A Unix Command-Line Tool to jot notes.
 Download [latest release](https://github.com/JonathanGzzBen/JotNote/releases/latest), head to downloads directory and install using [pip](https://pypi.org/project/pip/).
 
 ```shell
-pip install JotNote-1.0.0.tar.gz
+pip install JotNote-1.0.1.tar.gz
 ```
 
 ### From repository
