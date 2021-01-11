@@ -12,7 +12,9 @@ def parse_note(input):
     first_point_index = input.find(".")
     first_line_break_index = input.find("\n")
     title_end_index = -1
-    if (first_line_break_index < first_point_index or first_point_index == -1):
+    if (first_line_break_index == -1):
+        title_end_index = first_point_index
+    elif (first_line_break_index < first_point_index or first_point_index == -1):
         title_end_index = first_line_break_index
     elif (first_point_index < first_line_break_index):
         title_end_index = first_point_index
